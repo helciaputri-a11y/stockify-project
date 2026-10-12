@@ -1,62 +1,55 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitoring Stok - Stockify</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 p-8">
-    <div class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <div class="flex justify-between items-center mb-6">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-800">Monitoring Stok Real-Time</h1>
-                <p class="text-sm text-gray-500">Pantau ketersediaan stok barang dan status peringatan stok menipis.</p>
-            </div>
-            <div>
-                <a href="{{ route('products.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 mr-2">Kembali ke Produk</a>
-                <a href="{{ route('stocks.index') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Manajemen Transaksi</a>
-            </div>
-        </div>
+@extends('layouts.sidebar')
 
-        <div class="overflow-x-auto">
-            <table class="min-w-full bg-white border border-gray-200">
-                <thead>
-                    <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                        <th class="py-3 px-6 text-left">No</th>
-                        <th class="py-3 px-6 text-left">Nama Produk</th>
-                        <th class="py-3 px-6 text-left">Kategori</th>
-                        <th class="py-3 px-6 text-left">Supplier</th>
-                        <th class="py-3 px-6 text-center">Jumlah Stok</th>
-                        <th class="py-3 px-6 text-center">Status Stok</th>
-                    </tr>
-                </thead>
-                <tbody class="text-gray-600 text-sm font-light">
-                    @forelse($products as $index => $product)
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-3 px-6 text-left whitespace-nowrap">{{ $index + 1 }}</td>
-                            <td class="py-3 px-6 text-left font-medium text-gray-800">{{ $product->name }}</td>
-                            <td class="py-3 px-6 text-left">{{ $product->category->name ?? '-' }}</td>
-                            <td class="py-3 px-6 text-left">{{ $product->supplier->name ?? '-' }}</td>
-                            <td class="py-3 px-6 text-center font-bold text-base">{{ $product->stock }}</td>
-                            <td class="py-3 px-6 text-center">
-                                @if($product->stock <= 0)
-                                    <span class="bg-red-200 text-red-700 py-1 px-3 rounded-full text-xs font-bold">Habis</span>
-                                @elseif($product->stock <= 5)
-                                    <span class="bg-yellow-200 text-yellow-800 py-1 px-3 rounded-full text-xs font-bold">Menipis (Kritis)</span>
-                                @else
-                                    <span class="bg-green-200 text-green-700 py-1 px-3 rounded-full text-xs font-bold">Aman</span>
-                                @endif
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="py-4 text-center text-gray-500">Belum ada data produk.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+@section('content')
+<div class="max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800">Monitoring Stok Real-Time</h1>
+            <p class="text-sm text-slate-500">Pantau ketersediaan stok barang dan status peringatan stok menipis.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="{{ route('products.index') }}" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition shadow-sm">Kembali ke Produk</a>
+            <a href="{{ route('stocks.index') }}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition shadow-md shadow-blue-600/30">Manajemen Transaksi</a>
         </div>
     </div>
-</body>
-</html>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-400 text-xs uppercase tracking-wider font-semibold">
+                    <th class="py-4 px-6 w-20">No</th>
+                    <th class="py-4 px-6">Nama Produk</th>
+                    <th class="py-4 px-6">Kategori</th>
+                    <th class="py-4 px-6">Supplier</th>
+                    <th class="py-4 px-6 text-center w-32">Jumlah Stok</th>
+                    <th class="py-4 px-6 text-center w-36">Status Stok</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-sm text-slate-600">
+                @forelse($products as $index => $product)
+                    <tr class="hover:bg-slate-50/50 transition">
+                        <td class="py-4 px-6 font-medium text-slate-500">{{ $index + 1 }}</td>
+                        <td class="py-4 px-6 font-semibold text-slate-800">{{ $product->name }}</td>
+                        <td class="py-4 px-6">{{ $product->category->name ?? '-' }}</td>
+                        <td class="py-4 px-6">{{ $product->supplier->name ?? '-' }}</td>
+                        <td class="py-4 px-6 text-center font-bold text-slate-800">{{ $product->stock }}</td>
+                        <td class="py-4 px-6 text-center">
+                            @if($product->stock <= 0)
+                                <span class="px-3 py-1 bg-rose-50 text-rose-600 border border-rose-200 rounded-full text-xs font-bold">Habis</span>
+                            @elseif($product->stock <= 5)
+                                <span class="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full text-xs font-bold">Menipis</span>
+                            @else
+                                <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs font-bold">Aman</span>
+                            @endif
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" class="py-8 text-center text-slate-400 italic">Belum ada data produk.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+@endsection

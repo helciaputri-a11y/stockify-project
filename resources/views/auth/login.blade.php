@@ -12,13 +12,13 @@
         <h2 class="text-2xl font-bold text-center text-indigo-600 mb-2">Stockify WMS</h2>
         <p class="text-center text-gray-500 text-sm mb-6">Silakan masuk untuk melanjutkan</p>
         
-        @if(session('error'))
+        @if($errors->any())
             <div class="bg-red-100 text-red-700 p-3 rounded-lg mb-4 text-sm">
-                {{ session('error') }}
+                {{ $errors->first() }}
             </div>
         @endif
 
-        <form action="{{ route('login') }}" method="POST">
+       <form action="{{ url('/') }}" method="POST">
             @csrf
             
             <div class="mb-4">

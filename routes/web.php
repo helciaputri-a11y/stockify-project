@@ -16,12 +16,10 @@ use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\StockTransaction;
 
-// 1. Tampilkan halaman login saat akses URL utama (GET)
 Route::get('/', function () {
     return view('auth.login');
 })->name('login');
 
-// 2. Proses data saat tombol login ditekan (POST)
 Route::post('/', function (Request $request) {
     $credentials = $request->validate([
         'email' => ['required', 'email'],
@@ -39,8 +37,6 @@ Route::post('/', function (Request $request) {
 });
 
 Route::middleware(['auth'])->group(function () {
-    
-    // Dashboard & Stok (Bisa diakses oleh semua role termasuk Staff)
     Route::get('/dashboard', function () {
         $totalCategories = Category::count();
         $totalProducts = Product::count();
@@ -55,20 +51,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('stocks/opname', [StockController::class, 'opnameCreate'])->name('stocks.opname');
     Route::post('stocks/opname', [StockController::class, 'opnameStore'])->name('stocks.opname.store');
 
-    // Manajemen (Produk, Kategori, Supplier, Transaksi, Laporan, User)
-    Route::resource('products', ProductController::class);
-    
-    // Rute Tambahan untuk Monitoring Produk
     Route::get('/products/monitoring', [ProductController::class, 'monitoring'])->name('products.monitoring');
+    Route::get('/activity-logs', [ProductController::class, 'activityLogs'])->name('activity.logs');
 
+    Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('suppliers', SupplierController::class);
     Route::resource('transactions', StockTransactionController::class)->names('transactions');
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/export-pdf', [ReportController::class, 'exportPdf'])->name('reports.export');
     Route::resource('users', UserController::class);
+    Route::get('/suppliers/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
 
-    // Rute Logout
     Route::post('/logout', function (Request $request) {
         Auth::logout();
         $request->session()->invalidate();

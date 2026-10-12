@@ -10,11 +10,14 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
+        'code', // Ditambahkan agar kode produk bisa tersimpan
         'name',
         'price',
         'stock',
         'category_id',
         'supplier_id',
+        'size',   // <-- Ditambahkan untuk ukuran
+        'color',  // <-- Ditambahkan untuk warna
     ];
 
     public function stockTransactions()
@@ -22,7 +25,6 @@ class Product extends Model
         return $this->hasMany(StockTransaction::class);
     }
 
-    // Tambahkan relasi ini agar error hilang
     public function category()
     {
         return $this->belongsTo(Category::class);

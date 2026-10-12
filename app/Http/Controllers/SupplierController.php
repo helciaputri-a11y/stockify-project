@@ -43,9 +43,10 @@ class SupplierController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Supplier $supplier)
+    public function show($id)
     {
-        //
+        $supplier = Supplier::with('products')->findOrFail($id);
+        return view('suppliers.show', compact('supplier'));
     }
 
     /**

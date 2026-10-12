@@ -67,7 +67,7 @@
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $trx->created_at }}</td>
                 <td>{{ $trx->product->name ?? 'Produk Dihapus' }}</td>
-                <td>{{ ucfirst($trx->type) }}</td>
+                <td>{{ ucfirst($trx->type) }}</td> 
                 <td>{{ $trx->quantity }}</td>
             </tr>
             @empty
